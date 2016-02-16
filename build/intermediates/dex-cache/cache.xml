@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<items version="2" >
+
+    <item
+        jar="/home1/ugrads/lmeng/Desktop/cs2063/project-365/app/build/intermediates/exploded-aar/com.android.support/support-v4/23.1.1/jars/libs/internal_impl-23.1.1.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="a4de9c81ae239414e1ed0f86441b02abaf29bca9">
+        <dex dex="/home1/ugrads/lmeng/Desktop/cs2063/project-365/app/build/intermediates/pre-dexed/debug/internal_impl-23.1.1_99b970fdbce263c08c15f8b9cf7fca1766454b52.jar" />
+    </item>
+    <item
+        jar="/home1/ugrads/lmeng/Android/Sdk/extras/android/m2repository/com/android/support/support-annotations/23.1.1/support-annotations-23.1.1.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="8d680ba5a623724d1fb0e81c36a790f023a6cede">
+        <dex dex="/home1/ugrads/lmeng/Desktop/cs2063/project-365/app/build/intermediates/pre-dexed/debug/support-annotations-23.1.1_1614a14facd83b4f7dcbf30100ab5d39a6527414.jar" />
+    </item>
+    <item
+        jar="/home1/ugrads/lmeng/Desktop/cs2063/project-365/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.1.1/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="5c5699834e9722f1c288fea2de82725d078ba127">
+        <dex dex="/home1/ugrads/lmeng/Desktop/cs2063/project-365/app/build/intermediates/pre-dexed/debug/com.android.support-appcompat-v7-23.1.1_cbbd2d5b217d5fd12b5c0bc597ef36277800907f.jar" />
+    </item>
+    <item
+        jar="/home1/ugrads/lmeng/Desktop/cs2063/project-365/app/build/intermediates/exploded-aar/com.android.support/support-v4/23.1.1/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="6cbc7773921fcfedbe55657578f0cbfe614778dc">
+        <dex dex="/home1/ugrads/lmeng/Desktop/cs2063/project-365/app/build/intermediates/pre-dexed/debug/com.android.support-support-v4-23.1.1_7005f36d6078f1e0146df27b4a167542968ee476.jar" />
+    </item>
+
+</items>
