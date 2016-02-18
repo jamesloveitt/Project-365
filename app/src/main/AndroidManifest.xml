@@ -2,6 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="mobiledev.unb.ca.project365" >
 
+    <uses-feature android:name="android.hardware.camera" android:required="true" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -18,7 +21,21 @@
 
         <activity
             android:name=".ViewCalendarActivity"
-            android:label="View Calendar Activity" >
+            android:label="View Calendar Activity"
+            android:parentActivityName=".MainActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="mobiledev.unb.ca.project365.MainActivity" />
+        </activity>
+
+
+        <activity
+            android:name=".SaveNewPhotoActivity"
+            android:label="Save New Photo Activity"
+            android:parentActivityName=".MainActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="mobiledev.unb.ca.project365.MainActivity" />
         </activity>
     </application>
 

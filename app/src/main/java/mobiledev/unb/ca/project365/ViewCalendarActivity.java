@@ -4,13 +4,21 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
 
-/**
- * Created by lmeng on 12/02/16.
- */
+import java.util.ArrayList;
+import java.util.List;
+
 public class ViewCalendarActivity extends Activity {
+
+    private List<Photo> photos = new ArrayList<Photo>();
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.view_calendar);
+
+        photos = loadSavedPhotos();
+    }
+
+    private List<Photo> loadSavedPhotos() {
+        // TODO - check the folder defined in mPhotoFolderPath to load all previously saved photos for this app
     }
 }
