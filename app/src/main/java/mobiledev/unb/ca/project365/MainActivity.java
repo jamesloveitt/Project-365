@@ -69,7 +69,7 @@ public class MainActivity extends Activity {
     }
 
     private File createTempImageFile() throws IOException {
-        // Create an image file name
+        // Create a unique image file name
 
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
         String tempPhotoFileName = "PROJECT365_temp_" + timeStamp + "_";
@@ -90,7 +90,7 @@ public class MainActivity extends Activity {
 
             Intent intent = new Intent(MainActivity.this, SaveNewPhotoActivity.class);
 
-            // Send the photo that was just taken to the SaveNewPhoto activity
+            // Send the path of the new temporary photo to the SaveNewPhoto activity
 
             intent.putExtra("imagePath",mCurrentPhotoPath);
             startActivity(intent);

@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -24,6 +25,7 @@ public class SaveNewPhotoActivity extends Activity {
     private File mStorageDir;
     private String mCurrentPhotoPath;
     private Bitmap currentPhotoBitmap;
+    private String mSavedPhotoFolderPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES) +"/365Project";
     private static final String TAG ="Debug SaveNew";
 
 
@@ -34,11 +36,16 @@ public class SaveNewPhotoActivity extends Activity {
         todaysPhotoView = (ImageView) findViewById(R.id.todaysPhotoView);
         btnSavePhoto = (Button) findViewById(R.id.btnSavePhoto);
 
-        // Display the picture that was just taken
+        // Retrieve and display the picture that was just taken
 
         String imagePath = getIntent().getStringExtra("imagePath");
         currentPhotoBitmap = BitmapFactory.decodeFile(imagePath);
-        todaysPhotoView.setImageBitmap(currentPhotoBitmap);
+
+        // Some sample code for rotation we could use later on
+        Matrix matrix = new Matrix();
+        matrix.postRotate(90F);
+        Bitmap rotatedBitmap = Bitmap.createBitmap(currentPhotoBitmap,0, 0, currentPhotoBitmap.getWidth(), currentPhotoBitmap.getHeight(),   matrix, true);
+        todaysPhotoView.setImageBitmap(rotatedBitmap);
 
         // Save the picture to the user's list of photos and redirect them to the home page
 
@@ -66,7 +73,6 @@ public class SaveNewPhotoActivity extends Activity {
     private File createSavedPhotoFile() throws IOException {
         // Create an image file name
 
-        String mSavedPhotoFolderPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES) +"/365Project";
         String caption = "test caption";
 
         // TODO: get the caption from a text field in save_new_photo.xml
