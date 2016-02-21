@@ -40,13 +40,13 @@ public class SaveNewPhotoActivity extends Activity {
         currentPhotoBitmap = BitmapFactory.decodeFile(imagePath);
         todaysPhotoView.setImageBitmap(currentPhotoBitmap);
 
-        // Save the picture to the user's list of photos and redirect them to the calendar
+        // Save the picture to the user's list of photos and redirect them to the home page
 
         btnSavePhoto.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(SaveNewPhotoActivity.this, ViewCalendarActivity.class);
+                Intent intent = new Intent(SaveNewPhotoActivity.this, MainActivity.class);
                 startActivity(intent);
 
                 File savedPhotoFile = null;
@@ -76,25 +76,13 @@ public class SaveNewPhotoActivity extends Activity {
 
         // Create a folder for only 365 Project photos
 
-        File folder = new File(mSavedPhotoFolderPath);
-        if (!folder.exists()) {
-            mStorageDir = new File(mSavedPhotoFolderPath);
-            mStorageDir.mkdirs();
-        }
+        mStorageDir = createDirectory(mSavedPhotoFolderPath);
 
-        // Create a new image file
+        // Create a new image file. We created mStorageDir earlier to make sure that the directory exists,
+        // but we only need to specify the directory path, mSavedPhotoFolderPath, to save the photo in that location.
 
         File image = new File(mSavedPhotoFolderPath,photoFileName+".jpg");
-
-        OutputStream output;
-        try {
-            output = new FileOutputStream(image);
-            currentPhotoBitmap.compress(Bitmap.CompressFormat.JPEG, 100, output);
-            output.flush();
-            output.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        savePhotoToFile(image);
 
         mCurrentPhotoPath = image.getAbsolutePath();
         Log.i(TAG, "The photo was saved in the following location: " + mCurrentPhotoPath);
@@ -107,6 +95,27 @@ public class SaveNewPhotoActivity extends Activity {
         Uri contentUri = Uri.fromFile(f);
         mediaScanIntent.setData(contentUri);
         this.sendBroadcast(mediaScanIntent);
+    }
+
+    private File createDirectory(String directoryPath) {
+        File directory = new File(directoryPath);
+        if (!directory.exists()) {
+            mStorageDir = new File(directoryPath);
+            mStorageDir.mkdirs();
+        }
+        return directory;
+    }
+
+    private void savePhotoToFile(File image) throws IOException {
+        OutputStream output;
+        try {
+            output = new FileOutputStream(image);
+            currentPhotoBitmap.compress(Bitmap.CompressFormat.JPEG, 100, output);
+            output.flush();
+            output.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 }

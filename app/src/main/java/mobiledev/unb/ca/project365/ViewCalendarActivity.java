@@ -10,15 +10,20 @@ import java.util.List;
 public class ViewCalendarActivity extends Activity {
 
     private List<Photo> photos = new ArrayList<Photo>();
+    private static final String TAG ="Debug ViewCalendar";
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.view_calendar);
 
-        //photos = loadSavedPhotos();
+        photos = loadSavedPhotos();
     }
 
-    private /*List<Photo>*/ void loadSavedPhotos() {
+    private List<Photo> loadSavedPhotos() {
         // TODO - check the folder defined in mPhotoFolderPath to load all previously saved photos for this app
+
+
+
+        return photos;
     }
 }
