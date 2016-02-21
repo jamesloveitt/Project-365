@@ -15,10 +15,10 @@ public class ViewCalendarActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.view_calendar);
 
-        photos = loadSavedPhotos();
+        //photos = loadSavedPhotos();
     }
 
-    private List<Photo> loadSavedPhotos() {
+    private /*List<Photo>*/ void loadSavedPhotos() {
         // TODO - check the folder defined in mPhotoFolderPath to load all previously saved photos for this app
     }
 }
