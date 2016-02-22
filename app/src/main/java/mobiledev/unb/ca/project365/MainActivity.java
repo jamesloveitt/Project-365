@@ -9,6 +9,19 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
+
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.FacebookSdk;
+import com.facebook.GraphRequest;
+import com.facebook.GraphResponse;
+import com.facebook.login.LoginResult;
+import com.facebook.login.widget.LoginButton;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.File;
 import java.io.IOException;
@@ -20,6 +33,8 @@ public class MainActivity extends Activity {
     private Button mTodaysPhotoBtn;
     private Button mViewCalendarBtn;
     private String mCurrentPhotoPath;
+    private CallbackManager callbackManager;
+    private LoginButton loginButton;
 
     private static final int REQUEST_TAKE_PHOTO = 1;
     private static final int REQUEST_IMAGE_CAPTURE = 1;
@@ -28,7 +43,29 @@ public class MainActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        FacebookSdk.sdkInitialize(getApplicationContext());
+        callbackManager = CallbackManager.Factory.create();
         setContentView(R.layout.activity_main);
+
+       
+        loginButton = (LoginButton)findViewById(R.id.login_button);
+
+        loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
+            @Override
+            public void onSuccess(LoginResult loginResult) {
+
+            }
+
+            @Override
+            public void onCancel() {
+
+            }
+
+            @Override
+            public void onError(FacebookException e) {
+
+            }
+        });
 
         mTodaysPhotoBtn = (Button) findViewById(R.id.btnTodaysPhoto);
         mTodaysPhotoBtn.setOnClickListener(new View.OnClickListener() {
@@ -85,6 +122,7 @@ public class MainActivity extends Activity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
             Log.i(TAG, "Switching to new activity");
 
@@ -94,6 +132,9 @@ public class MainActivity extends Activity {
 
             intent.putExtra("imagePath",mCurrentPhotoPath);
             startActivity(intent);
+        }
+        else{
+            callbackManager.onActivityResult(requestCode, resultCode, data);
         }
     }
 }
