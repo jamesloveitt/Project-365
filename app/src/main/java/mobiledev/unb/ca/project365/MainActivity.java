@@ -130,7 +130,7 @@ public class MainActivity extends Activity {
 
             // Send the path of the new temporary photo to the SaveNewPhoto activity
 
-            intent.putExtra("imagePath",mCurrentPhotoPath);
+            intent.putExtra(Photo.PHOTO_PATH,mCurrentPhotoPath);
             startActivity(intent);
         }
         else{

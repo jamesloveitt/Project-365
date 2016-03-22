@@ -1,9 +1,11 @@
 package mobiledev.unb.ca.project365;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Environment;
-import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.GridView;
 
 import java.io.File;
@@ -21,6 +23,7 @@ public class ViewCalendarActivity extends Activity {
     private File mStorageDir;
     private String mSavedPhotoDirectory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES) +"/365Project";
     private List<Photo> photos = new ArrayList<Photo>();
+    private PhotoGridAdapter adapter;
 
     private static final String TAG ="Debug ViewCalendar";
 
@@ -32,9 +35,24 @@ public class ViewCalendarActivity extends Activity {
 
         photos = loadSavedPhotos(mStorageDir);
 
+        // set up GridView adapter
+
         GridView gridView = (GridView) findViewById(R.id.gridView);
-        PhotoGridAdapter adapter = new PhotoGridAdapter(this, photos);
+        adapter = new PhotoGridAdapter(this, photos);
         gridView.setAdapter(adapter);
+
+        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
+                Photo photo = (Photo) adapter.getItem(position);
+                String photoPath = photo.getPhotoPath();
+
+                Intent fullSizePhotoIntent = new Intent(ViewCalendarActivity.this, ViewFullSizePhotoActivity.class);
+                fullSizePhotoIntent.putExtra(Photo.PHOTO_PATH, photoPath);
+                // might need to put more extras for the photo, or pass an ID to retrieve values in the fullSizePhotoIntent
+                startActivity(fullSizePhotoIntent);
+            }
+        });
     }
 
     private File createDirectory(String directoryPath) {
@@ -49,7 +67,7 @@ public class ViewCalendarActivity extends Activity {
     private List<Photo> loadSavedPhotos(File directory) {
         if (directory.isDirectory()) {
             for (File file : directory.listFiles()) {
-                // Avoid adding folders
+                // Add only photos, not folders
                 if(file.isFile()) {
                     photos.add(new Photo(file.getAbsolutePath(), "test caption"));
                 }

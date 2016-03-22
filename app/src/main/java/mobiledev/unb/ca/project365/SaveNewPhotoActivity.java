@@ -38,7 +38,7 @@ public class SaveNewPhotoActivity extends Activity {
 
         // Retrieve and display the picture that was just taken
 
-        String imagePath = getIntent().getStringExtra("imagePath");
+        String imagePath = getIntent().getStringExtra(Photo.PHOTO_PATH);
         currentPhotoBitmap = BitmapFactory.decodeFile(imagePath);
 
         // Some sample code for rotation we could use later on

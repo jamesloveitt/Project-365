@@ -44,6 +44,15 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="mobiledev.unb.ca.project365.MainActivity" />
         </activity>
+
+        <activity
+            android:name=".ViewFullSizePhotoActivity"
+            android:label="View Full Size Photo Activity"
+            android:parentActivityName=".ViewCalendarActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="mobiledev.unb.ca.project365.ViewCalendarActivity" />
+        </activity>
     </application>
 
 </manifest>

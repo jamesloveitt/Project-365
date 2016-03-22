@@ -39,7 +39,7 @@ public class PhotoGridAdapter extends BaseAdapter {
     }
 
     public Object getItem(int position) {
-        return position;
+        return photos.get(position);
     }
 
     public View getView(int position, View convertView, ViewGroup parent) {

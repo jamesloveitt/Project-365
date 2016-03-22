@@ -5,6 +5,8 @@ import java.util.Date;
 
 public class Photo {
 
+    public static final String PHOTO_PATH = "photo_path"; // keyword for passing extra data in intents
+
     private String photoPath;
     private String caption;
     private String timestamp;
