@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.GridView;
 import android.widget.ImageView;
 
 import java.util.List;
@@ -59,8 +60,9 @@ public class PhotoGridAdapter extends BaseAdapter {
             matrix.postRotate(90F);
             Bitmap rotatedBitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
             imageThumbnail.setImageBitmap(rotatedBitmap);
+            imageThumbnail.setScaleType(ImageView.ScaleType.CENTER_CROP);
+            imageThumbnail.setLayoutParams(new GridView.LayoutParams(150, 150));
         }
-
         return convertView;
     }
 }

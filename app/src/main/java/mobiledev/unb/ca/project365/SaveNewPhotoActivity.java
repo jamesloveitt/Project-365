@@ -17,6 +17,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.Calendar;
 
 public class SaveNewPhotoActivity extends Activity {
 
@@ -25,13 +26,15 @@ public class SaveNewPhotoActivity extends Activity {
     private File mStorageDir;
     private String mCurrentPhotoPath;
     private Bitmap currentPhotoBitmap;
-    private String mSavedPhotoFolderPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES) +"/365Project";
+    private String mSavedPhotoBasePath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES) +"/365Project";
     private static final String TAG ="Debug SaveNew";
 
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.save_new_photo);
+
+        // This view contains the image to save
 
         todaysPhotoView = (ImageView) findViewById(R.id.todaysPhotoView);
         btnSavePhoto = (Button) findViewById(R.id.btnSavePhoto);
@@ -71,28 +74,50 @@ public class SaveNewPhotoActivity extends Activity {
     }
 
     private File createSavedPhotoFile() throws IOException {
-        // Create an image file name
-
-        String caption = "test caption";
-
-        // TODO: get the caption from a text field in save_new_photo.xml
-
-        Photo savedPhoto = new Photo(mSavedPhotoFolderPath,caption);
-        String photoFileName = savedPhoto.getFileName();
-
         // Create a folder for only 365 Project photos
 
-        mStorageDir = createDirectory(mSavedPhotoFolderPath);
+        String savedPhotoFolder = mSavedPhotoBasePath + "/" + createDirectoryName();
+
+        mStorageDir = createDirectory(savedPhotoFolder);
+
+        // Create an image file name
+
+        Photo savedPhoto = new Photo(savedPhotoFolder,"test caption");
+        String photoFileName = savedPhoto.getFileName();
 
         // Create a new image file. We created mStorageDir earlier to make sure that the directory exists,
         // but we only need to specify the directory path, mSavedPhotoFolderPath, to save the photo in that location.
 
-        File image = new File(mSavedPhotoFolderPath,photoFileName+".jpg");
+        File image = new File(savedPhotoFolder,photoFileName+".jpg");
         savePhotoToFile(image);
 
         mCurrentPhotoPath = image.getAbsolutePath();
         Log.i(TAG, "The photo was saved in the following location: " + mCurrentPhotoPath);
         return image;
+    }
+
+    /*
+        Returns the directory name for the current year/month.
+        Used so that photos are saved in the correct directory based on
+        when the photo was taken.
+     */
+
+    private String createDirectoryName() {
+        Calendar calendar = Calendar.getInstance();
+
+        String directoryName = "";
+
+        int year = calendar.get(Calendar.YEAR);
+
+        int month = calendar.get(Calendar.MONTH) + 1;
+        String monthString = ""+month;
+        if(month < 10){
+            monthString = "0"+monthString;
+        }
+
+        directoryName += year+ "_" + monthString;
+
+        return directoryName;
     }
 
     private void galleryAddPic() {
