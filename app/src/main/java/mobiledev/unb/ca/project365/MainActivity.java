@@ -91,6 +91,7 @@ public class MainActivity extends Activity {
             File photoFile = null;
 
             try {
+                // create a temporary image file that will be saved into a permanent location in the SaveNewPhotoActivity class
                 photoFile = createTempImageFile();
             } catch (IOException ex) {
                 Log.i(TAG, "Photo file was not created. Error: "+ex.getMessage());
