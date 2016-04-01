@@ -56,6 +56,7 @@ public class SaveNewPhotoActivity extends Activity {
 
 
         //Bitmap must be mutable to be edited by the canvas
+
         mutableBitmap = currentPhotoBitmap.copy(Bitmap.Config.ARGB_8888, true);
 
                 // Some sample code for rotation we could use later on
@@ -79,8 +80,6 @@ public class SaveNewPhotoActivity extends Activity {
                 Paint paint = new Paint();
                 paint.setColor(Color.BLACK);
                 paint.setTextSize(25);
-
-
 
                 //location on the photo to place the text and what text to write
                 canvas.drawText(captionText.getText().toString(), 20, 40, paint);
