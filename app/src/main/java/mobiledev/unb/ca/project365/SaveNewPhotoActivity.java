@@ -54,6 +54,8 @@ public class SaveNewPhotoActivity extends Activity {
         String imagePath = getIntent().getStringExtra(Photo.PHOTO_PATH);
         currentPhotoBitmap = BitmapFactory.decodeFile(imagePath);
 
+
+        //Bitmap must be mutable to be edited by the canvas
         mutableBitmap = currentPhotoBitmap.copy(Bitmap.Config.ARGB_8888, true);
 
                 // Some sample code for rotation we could use later on
@@ -63,6 +65,8 @@ public class SaveNewPhotoActivity extends Activity {
         todaysPhotoView.setImageBitmap(rotatedBitmap);
 
 
+
+        //Save picture as with Button below but with a caption over the top of the image
 
         btnAddCaption.setOnClickListener(new View.OnClickListener() {
 
@@ -78,6 +82,7 @@ public class SaveNewPhotoActivity extends Activity {
 
 
 
+                //location on the photo to place the text and what text to write
                 canvas.drawText(captionText.getText().toString(), 20, 40, paint);
 
                 File savedPhotoFile = null;
@@ -93,7 +98,7 @@ public class SaveNewPhotoActivity extends Activity {
 
 
             }
-        });;
+        });
 
 
 
@@ -117,7 +122,7 @@ public class SaveNewPhotoActivity extends Activity {
                 // Display the 365 folder and photos in the Gallery
                 galleryAddPic();
             }
-        });;
+        });
     }
 
 
