@@ -4,14 +4,19 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Matrix;
+import android.graphics.Paint;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -23,9 +28,12 @@ public class SaveNewPhotoActivity extends Activity {
 
     private ImageView todaysPhotoView;
     private Button btnSavePhoto;
+    private Button btnAddCaption;
+    private EditText captionText;
     private File mStorageDir;
     private String mCurrentPhotoPath;
     private Bitmap currentPhotoBitmap;
+    private Bitmap mutableBitmap;
     private String mSavedPhotoBasePath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES) +"/365Project";
     private static final String TAG ="Debug SaveNew";
 
@@ -38,17 +46,56 @@ public class SaveNewPhotoActivity extends Activity {
 
         todaysPhotoView = (ImageView) findViewById(R.id.todaysPhotoView);
         btnSavePhoto = (Button) findViewById(R.id.btnSavePhoto);
+        btnAddCaption = (Button) findViewById(R.id.btnAddCaption);
+        captionText = (EditText) findViewById(R.id.captionText);
 
         // Retrieve and display the picture that was just taken
 
         String imagePath = getIntent().getStringExtra(Photo.PHOTO_PATH);
         currentPhotoBitmap = BitmapFactory.decodeFile(imagePath);
 
-        // Some sample code for rotation we could use later on
+        mutableBitmap = currentPhotoBitmap.copy(Bitmap.Config.ARGB_8888, true);
+
+                // Some sample code for rotation we could use later on
         Matrix matrix = new Matrix();
         matrix.postRotate(90F);
         Bitmap rotatedBitmap = Bitmap.createBitmap(currentPhotoBitmap,0, 0, currentPhotoBitmap.getWidth(), currentPhotoBitmap.getHeight(),   matrix, true);
         todaysPhotoView.setImageBitmap(rotatedBitmap);
+
+
+
+        btnAddCaption.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(SaveNewPhotoActivity.this, MainActivity.class);
+                startActivity(intent);
+
+                Canvas canvas = new Canvas(mutableBitmap);
+                Paint paint = new Paint();
+                paint.setColor(Color.BLACK);
+                paint.setTextSize(25);
+
+
+
+                canvas.drawText(captionText.getText().toString(), 20, 40, paint);
+
+                File savedPhotoFile = null;
+
+                try {
+                    savedPhotoFile = createSavedPhotoFile();
+                } catch (IOException ex) {
+                    Log.i(TAG, "Photo file was not created. Error: "+ex.getMessage());
+                }
+
+                // Display the 365 folder and photos in the Gallery
+                galleryAddPic();
+
+
+            }
+        });;
+
+
 
         // Save the picture to the user's list of photos and redirect them to the home page
 
@@ -72,6 +119,8 @@ public class SaveNewPhotoActivity extends Activity {
             }
         });;
     }
+
+
 
     private File createSavedPhotoFile() throws IOException {
         // Create a folder for only 365 Project photos
@@ -141,7 +190,7 @@ public class SaveNewPhotoActivity extends Activity {
         OutputStream output;
         try {
             output = new FileOutputStream(image);
-            currentPhotoBitmap.compress(Bitmap.CompressFormat.JPEG, 100, output);
+            mutableBitmap.compress(Bitmap.CompressFormat.JPEG, 100, output);
             output.flush();
             output.close();
         } catch (Exception e) {
