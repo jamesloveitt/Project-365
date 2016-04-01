@@ -6,29 +6,27 @@ import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.widget.Button;
-import android.widget.TextView;
 
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.FacebookSdk;
-import com.facebook.GraphRequest;
-import com.facebook.GraphResponse;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class MainActivity extends Activity {
+public class MainActivity extends AppCompatActivity {
 
     private Button mTodaysPhotoBtn;
     private Button mViewCalendarBtn;
@@ -47,7 +45,11 @@ public class MainActivity extends Activity {
         callbackManager = CallbackManager.Factory.create();
         setContentView(R.layout.activity_main);
 
-       
+        Toolbar mainToolbar = (Toolbar) findViewById(R.id.main_toolbar);
+        setSupportActionBar(mainToolbar);
+
+        ActionBar ab = getSupportActionBar();
+
         loginButton = (LoginButton)findViewById(R.id.login_button);
 
         loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
@@ -82,6 +84,12 @@ public class MainActivity extends Activity {
                 startActivity(intent);
             }
         });
+    }
+
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.activity_main, menu);
+        return true;
     }
 
     private void dispatchTakePictureIntent() {
