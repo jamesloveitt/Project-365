@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import java.util.regex.Matcher;
@@ -49,7 +50,10 @@ public class ViewCalendarActivity extends Activity {
             Log.i(TAG, "no directory for saved photos exists");
         }
 
-        for (File file : baseDirectory.listFiles()) {
+        File[] folders = baseDirectory.listFiles();
+        Arrays.sort(folders);
+
+        for (File file : folders) {
             if(file.isDirectory() && folderIsMonth(file.getName())) {
                 File currDirectory = file;
                 List<Photo> currMonthPhotos = loadSavedPhotos(currDirectory);
