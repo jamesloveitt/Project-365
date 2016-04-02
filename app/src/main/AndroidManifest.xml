@@ -66,6 +66,15 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="mobiledev.unb.ca.project365.ViewCalendarActivity" />
         </activity>
+
+        <activity
+            android:name=".SetNotification"
+            android:label="Set Notification"
+            android:parentActivityName=".MainActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="mobiledev.unb.ca.project365.MainActivity" />
+        </activity>
     </application>
 
 </manifest>

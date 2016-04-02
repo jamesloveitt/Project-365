@@ -1,6 +1,5 @@
 package mobiledev.unb.ca.project365;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Environment;
@@ -12,7 +11,6 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
@@ -35,7 +33,6 @@ public class MainActivity extends AppCompatActivity {
     private String mCurrentPhotoPath;
     private CallbackManager callbackManager;
     private LoginButton loginButton;
-    private AlarmReceiver alarm = new AlarmReceiver();
 
     private static final int REQUEST_TAKE_PHOTO = 1;
     private static final int REQUEST_IMAGE_CAPTURE = 1;
@@ -44,13 +41,14 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         FacebookSdk.sdkInitialize(getApplicationContext());
         callbackManager = CallbackManager.Factory.create();
+
         setContentView(R.layout.activity_main);
 
         Toolbar mainToolbar = (Toolbar) findViewById(R.id.main_toolbar);
         setSupportActionBar(mainToolbar);
-
         ActionBar ab = getSupportActionBar();
 
         loginButton = (LoginButton)findViewById(R.id.login_button);
@@ -58,17 +56,14 @@ public class MainActivity extends AppCompatActivity {
         loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
-
             }
 
             @Override
             public void onCancel() {
-
             }
 
             @Override
             public void onError(FacebookException e) {
-
             }
         });
 
@@ -92,7 +87,8 @@ public class MainActivity extends AppCompatActivity {
         mAlarmBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                alarm.setAlarm(getApplicationContext());
+                Intent intent = new Intent(MainActivity.this, SetNotification.class);
+                startActivity(intent);
             }
         });
     }
@@ -103,8 +99,6 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
-
-
     private void dispatchTakePictureIntent() {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 
@@ -112,14 +106,13 @@ public class MainActivity extends AppCompatActivity {
             File photoFile = null;
 
             try {
-                // create a temporary image file that will be saved into a permanent location in the SaveNewPhotoActivity class
+                // Create a temporary image file that will be saved into a permanent location in the SaveNewPhotoActivity class
                 photoFile = createTempImageFile();
             } catch (IOException ex) {
                 Log.i(TAG, "Photo file was not created. Error: "+ex.getMessage());
             }
 
             // Continue only if the File was successfully created
-
             if (photoFile != null) {
                 takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(photoFile));
                 startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO);
@@ -129,13 +122,11 @@ public class MainActivity extends AppCompatActivity {
 
     private File createTempImageFile() throws IOException {
         // Create a unique image file name
-
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
         String tempPhotoFileName = "PROJECT365_temp_" + timeStamp + "_";
         File tempStorageDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
 
         // Create a new file
-
         File tempPhoto = File.createTempFile(tempPhotoFileName, ".jpg", tempStorageDir);
         mCurrentPhotoPath = tempPhoto.getAbsolutePath();
         Log.i(TAG, "The photo was saved in the following location: " + mCurrentPhotoPath);
@@ -151,7 +142,6 @@ public class MainActivity extends AppCompatActivity {
             Intent intent = new Intent(MainActivity.this, SaveNewPhotoActivity.class);
 
             // Send the path of the new temporary photo to the SaveNewPhoto activity
-
             intent.putExtra(Photo.PHOTO_PATH,mCurrentPhotoPath);
             startActivity(intent);
         }
@@ -159,4 +149,5 @@ public class MainActivity extends AppCompatActivity {
             callbackManager.onActivityResult(requestCode, resultCode, data);
         }
     }
+
 }

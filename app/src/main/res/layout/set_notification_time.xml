@@ -8,7 +8,7 @@
     android:paddingRight="0dp"
     android:paddingTop="0dp"
     android:paddingBottom="0dp"
-    tools:context="mobiledev.unb.ca.project365.MainActivity"
+    tools:context="mobiledev.unb.ca.project365.SetNotification"
     android:background="#dfe0d0"
     android:orientation="vertical"
     android:clickable="true"
@@ -22,28 +22,25 @@
         android:layout_width="fill_parent"
         app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-        android:padding="0dp" />
+        android:padding="0dp"
+        android:touchscreenBlocksFocus="false" />
+
+    <TimePicker
+        android:id="@+id/time_picker"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:timePickerMode="clock"
+        android:layout_centerHorizontal="true"
+        android:textAlignment="center"
+        android:theme="@style/Base.Theme.AppCompat.Light"
+        android:gravity="center"/>
+
 
     <Button
         android:layout_width="195dp"
         android:layout_height="wrap_content"
-        android:text="Take Today&apos;s Photo"
-        android:id="@+id/btnTodaysPhoto"
-        android:layout_below="@+id/textView"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="120dp"
-        android:layout_gravity="center_horizontal"
-        android:layout_weight="0.06" />
-
-    <Button
-        android:layout_width="195dp"
-        android:layout_height="wrap_content"
-        android:text="View Calendar"
-        android:id="@+id/btnViewCalendar"
-        android:layout_below="@+id/textView"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
+        android:text="Set Notification"
+        android:id="@+id/btnSetNotification"
         android:layout_marginTop="10dp"
         android:layout_gravity="center_horizontal"
         android:layout_weight="0.06" />
@@ -51,23 +48,10 @@
     <Button
         android:layout_width="195dp"
         android:layout_height="wrap_content"
-        android:text="Set Alarm"
-        android:id="@+id/btnAlarm"
-        android:layout_below="@+id/textView"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
+        android:text="Cancel Notifications"
+        android:id="@+id/btnRemoveNotificaiton"
         android:layout_marginTop="10dp"
         android:layout_gravity="center_horizontal"
-        android:layout_weight="0.06"
-        android:onClick="showTimePickerDialog" />
-
-
-    <com.facebook.login.widget.LoginButton
-        android:id="@+id/login_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="30dp"
-        android:layout_marginBottom="30dp" />
+        android:layout_weight="0.06" />
 
 </LinearLayout>

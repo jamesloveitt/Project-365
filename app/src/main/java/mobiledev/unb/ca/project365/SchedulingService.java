@@ -28,7 +28,7 @@ public class SchedulingService extends IntentService{
 
         sendNotification("Test 123");
 
-        AlarmReceiver.completeWakefulIntent(intent);
+        //AlarmReceiver.completeWakefulIntent(intent);
     }
 
     private void sendNotification(String msg) {
