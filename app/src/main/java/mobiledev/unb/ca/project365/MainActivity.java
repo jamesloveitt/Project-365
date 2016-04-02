@@ -12,6 +12,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
@@ -30,9 +31,11 @@ public class MainActivity extends AppCompatActivity {
 
     private Button mTodaysPhotoBtn;
     private Button mViewCalendarBtn;
+    private Button mAlarmBtn;
     private String mCurrentPhotoPath;
     private CallbackManager callbackManager;
     private LoginButton loginButton;
+    private AlarmReceiver alarm = new AlarmReceiver();
 
     private static final int REQUEST_TAKE_PHOTO = 1;
     private static final int REQUEST_IMAGE_CAPTURE = 1;
@@ -84,6 +87,14 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        mAlarmBtn = (Button) findViewById(R.id.btnAlarm);
+        mAlarmBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                alarm.setAlarm(getApplicationContext());
+            }
+        });
     }
 
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -91,6 +102,8 @@ public class MainActivity extends AppCompatActivity {
         inflater.inflate(R.menu.activity_main, menu);
         return true;
     }
+
+
 
     private void dispatchTakePictureIntent() {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
