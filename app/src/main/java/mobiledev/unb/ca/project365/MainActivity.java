@@ -102,8 +102,6 @@ public class MainActivity extends AppCompatActivity {
                 Intent intent = new Intent(MainActivity.this, SetNotification.class);
                 startActivity(intent);
                 return true;
-            case R.id.statistics_menu_item:
-                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
