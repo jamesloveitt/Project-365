@@ -1,6 +1,8 @@
 package mobiledev.unb.ca.project365;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -18,6 +20,15 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.FacebookSdk;
+import com.facebook.login.LoginResult;
+import com.facebook.share.model.SharePhoto;
+import com.facebook.share.model.SharePhotoContent;
+import com.facebook.share.widget.ShareButton;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -29,11 +40,13 @@ public class SaveNewPhotoActivity extends Activity {
     private ImageView todaysPhotoView;
     private Button btnSavePhoto;
     private Button btnAddCaption;
+    private ShareButton btnShareWithFacebook;
     private EditText captionText;
     private File mStorageDir;
     private String mCurrentPhotoPath;
     private Bitmap currentPhotoBitmap;
     private Bitmap mutableBitmap;
+    private CallbackManager callbackManager;
     private String mSavedPhotoBasePath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES) +"/365Project";
     private static final String TAG ="Debug SaveNew";
 
@@ -41,6 +54,7 @@ public class SaveNewPhotoActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.save_new_photo);
+        FacebookSdk.sdkInitialize(getApplicationContext());
 
         // This view contains the image to save
 
@@ -48,6 +62,8 @@ public class SaveNewPhotoActivity extends Activity {
         btnSavePhoto = (Button) findViewById(R.id.btnSavePhoto);
         btnAddCaption = (Button) findViewById(R.id.btnAddCaption);
         captionText = (EditText) findViewById(R.id.captionText);
+        btnShareWithFacebook = (ShareButton) findViewById(R.id.shareButton);
+        btnShareWithFacebook.setEnabled(true);
 
         // Retrieve and display the picture that was just taken
 
@@ -59,12 +75,11 @@ public class SaveNewPhotoActivity extends Activity {
 
         mutableBitmap = currentPhotoBitmap.copy(Bitmap.Config.ARGB_8888, true);
 
-                // Some sample code for rotation we could use later on
+        // Some sample code for rotation we could use later on
         Matrix matrix = new Matrix();
         matrix.postRotate(90F);
-        Bitmap rotatedBitmap = Bitmap.createBitmap(currentPhotoBitmap,0, 0, currentPhotoBitmap.getWidth(), currentPhotoBitmap.getHeight(),   matrix, true);
+        Bitmap rotatedBitmap = Bitmap.createBitmap(currentPhotoBitmap, 0, 0, currentPhotoBitmap.getWidth(), currentPhotoBitmap.getHeight(), matrix, true);
         todaysPhotoView.setImageBitmap(rotatedBitmap);
-
 
 
         //Save picture as with Button below but with a caption over the top of the image
@@ -89,7 +104,7 @@ public class SaveNewPhotoActivity extends Activity {
                 try {
                     savedPhotoFile = createSavedPhotoFile();
                 } catch (IOException ex) {
-                    Log.i(TAG, "Photo file was not created. Error: "+ex.getMessage());
+                    Log.i(TAG, "Photo file was not created. Error: " + ex.getMessage());
                 }
 
                 // Display the 365 folder and photos in the Gallery
@@ -98,7 +113,6 @@ public class SaveNewPhotoActivity extends Activity {
 
             }
         });
-
 
 
         // Save the picture to the user's list of photos and redirect them to the home page
@@ -115,13 +129,47 @@ public class SaveNewPhotoActivity extends Activity {
                 try {
                     savedPhotoFile = createSavedPhotoFile();
                 } catch (IOException ex) {
-                    Log.i(TAG, "Photo file was not created. Error: "+ex.getMessage());
+                    Log.i(TAG, "Photo file was not created. Error: " + ex.getMessage());
                 }
 
                 // Display the 365 folder and photos in the Gallery
                 galleryAddPic();
             }
         });
+
+
+        btnShareWithFacebook.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                postPicture();
+
+
+            }
+        });
+    }
+
+
+
+    public void postPicture() {
+            //share dialog
+            AlertDialog.Builder shareDialog = new AlertDialog.Builder(this);
+            shareDialog.setTitle("Share Todays Photo");
+            shareDialog.setMessage("Share image to Facebook?");
+            shareDialog.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int which) {
+                    //share the image to Facebook
+                    SharePhoto photo = new SharePhoto.Builder().setBitmap(mutableBitmap).build();
+                    SharePhotoContent content = new SharePhotoContent.Builder().addPhoto(photo).build();
+                    btnShareWithFacebook.setShareContent(content);
+                    btnShareWithFacebook.performClick();
+                }
+            });
+            shareDialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.cancel();
+                }
+            });
+            shareDialog.show();
     }
 
 

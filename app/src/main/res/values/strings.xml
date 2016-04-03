@@ -5,4 +5,5 @@
     <string name="saved_notification_time_hour">notificationTimeHour</string>
     <string name="saved_notification_time_min">notificationTimeMin</string>
     <string name="view_statistics">View Statistics</string>
+    <string name="share">Share</string>
 </resources>
