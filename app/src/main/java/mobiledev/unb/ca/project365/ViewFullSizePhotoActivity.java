@@ -5,34 +5,33 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.os.Bundle;
+import android.provider.Contacts;
+import android.support.v4.view.ViewPager;
 import android.widget.ImageView;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ViewFullSizePhotoActivity extends Activity {
     private static final String TAG ="Debug SaveNew";
 
-    private ImageView fullSizePhotoView;
-    private String mCurrentPhotoPath;
-    private Bitmap currentPhotoBitmap;
+    private ArrayList<String> photoPaths;
+    private int position;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.view_full_size_photo);
+        setContentView(R.layout.view_full_size_photo_container);
 
-        fullSizePhotoView = (ImageView) findViewById(R.id.fullSizePhotoView);
+        ViewPager pager = (ViewPager) findViewById(R.id.pager);
 
-        // Retrieve and display the full size photo
+        // Set up the ViewPager adapter to be able to swipe through photos
+        photoPaths = getIntent().getStringArrayListExtra(Photo.PHOTO_PATH);
+        position = getIntent().getIntExtra(Photo.PHOTO_POSITION, 0);
 
-        mCurrentPhotoPath = getIntent().getStringExtra(Photo.PHOTO_PATH);
-        currentPhotoBitmap = BitmapFactory.decodeFile(mCurrentPhotoPath);
-
-        // Some sample code for rotation we could use later on
-        Matrix matrix = new Matrix();
-        matrix.postRotate(90F);
-        Bitmap rotatedBitmap = Bitmap.createBitmap(currentPhotoBitmap, 0, 0, currentPhotoBitmap.getWidth(), currentPhotoBitmap.getHeight(), matrix, true);
-
-        fullSizePhotoView.setImageBitmap(rotatedBitmap);
+        ViewFullSizePhotoAdapter adapter = new ViewFullSizePhotoAdapter(this, photoPaths);
+        pager.setAdapter(adapter);
+        pager.setCurrentItem(position);
     }
 
 }

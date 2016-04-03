@@ -31,6 +31,7 @@ public class ViewCalendarActivity extends Activity {
     private File mStorageDir;
     private String mSavedPhotoBasePath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES) +"/365Project";
     private static final String TAG ="Debug ViewCalendar";
+    private ArrayList<String> mAllPhotoPaths = new ArrayList<String>();
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,16 +39,9 @@ public class ViewCalendarActivity extends Activity {
 
         mStorageDir = createDirectory(mSavedPhotoBasePath);
 
-        /*
-        dynamically add gridviews sorted by month - http://javatechig.com/android/listview-with-section-header-in-android
-                                                    https://stackoverflow.com/questions/4203506/how-can-i-add-a-textview-to-a-linearlayout-dynamically-in-android/27781046#27781046
-        directory naming conventions: 2016_01 (year_month)
-        check directories from smallest to largest
-        */
-
         File baseDirectory = new File(mSavedPhotoBasePath);
         if(!baseDirectory.exists()) {
-            Log.i(TAG, "no directory for saved photos exists");
+            Log.i(TAG, "No directory for saved photos exists");
         }
 
         File[] folders = baseDirectory.listFiles();
@@ -93,11 +87,9 @@ public class ViewCalendarActivity extends Activity {
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
-                Photo photo = (Photo) adapterView.getAdapter().getItem(position);
-                String photoPath = photo.getPhotoPath();
-
                 Intent fullSizePhotoIntent = new Intent(ViewCalendarActivity.this, ViewFullSizePhotoActivity.class);
-                fullSizePhotoIntent.putExtra(Photo.PHOTO_PATH, photoPath);
+                fullSizePhotoIntent.putStringArrayListExtra(Photo.PHOTO_PATH, mAllPhotoPaths);
+                fullSizePhotoIntent.putExtra(Photo.PHOTO_POSITION, position);
                 startActivity(fullSizePhotoIntent);
             }
         });
@@ -108,7 +100,7 @@ public class ViewCalendarActivity extends Activity {
      */
 
     private boolean folderIsMonth(String folderName) {
-        // check if the folder name is in the format "2016_01"
+        // Check if the folder name is in the format "2016_01"
         Pattern r = Pattern.compile("20\\d\\d_\\d\\d$");
         Matcher m = r.matcher(folderName);
 
@@ -180,6 +172,11 @@ public class ViewCalendarActivity extends Activity {
         return directory;
     }
 
+    /*
+        Populate collections for the current month's photos as well as a list of
+        all photo paths to be used for swiping through all photos.
+     */
+
     private List<Photo> loadSavedPhotos(File directory) {
         List<Photo> photos = new ArrayList<Photo>();
 
@@ -187,7 +184,8 @@ public class ViewCalendarActivity extends Activity {
             for (File file : directory.listFiles()) {
                 // Add only photos, not folders
                 if(file.isFile()) {
-                    photos.add(new Photo(file.getAbsolutePath(), "test caption"));
+                    photos.add(new Photo(file.getAbsolutePath()));
+                    mAllPhotoPaths.add(file.getAbsolutePath());
                 }
             }
         }

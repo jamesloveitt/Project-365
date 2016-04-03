@@ -183,7 +183,7 @@ public class SaveNewPhotoActivity extends Activity {
 
         // Create an image file name
 
-        Photo savedPhoto = new Photo(savedPhotoFolder,"test caption");
+        Photo savedPhoto = new Photo(savedPhotoFolder);
         String photoFileName = savedPhoto.getFileName();
 
         // Create a new image file. We created mStorageDir earlier to make sure that the directory exists,
