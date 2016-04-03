@@ -58,7 +58,12 @@ public class PhotoGridAdapter extends BaseAdapter {
         if(bitmap != null) {
             Matrix matrix = new Matrix();
             matrix.postRotate(90F);
+            int scaledWidth = bitmap.getWidth()/10;
+            int scaledHeight = bitmap.getHeight()/10;
+
+            bitmap = Bitmap.createScaledBitmap(bitmap, scaledWidth, scaledHeight, true);
             Bitmap rotatedBitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
+
             imageThumbnail.setImageBitmap(rotatedBitmap);
             imageThumbnail.setScaleType(ImageView.ScaleType.CENTER_CROP);
             imageThumbnail.setLayoutParams(new GridView.LayoutParams(150, 150));

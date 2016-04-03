@@ -28,7 +28,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text="Welcome to your 365 Project! By committing to take one photo a day for an entire year you'll be on your way to improving your photography and have a lasting collection of lasting memories."
+        android:text="@string/welcome_message"
         android:id="@+id/textView2"
         android:layout_marginTop="70dp"
         android:layout_gravity="center_horizontal"
@@ -39,7 +39,6 @@
         android:layout_marginRight="30dp"
         android:layout_marginLeft="30dp"
         android:background="#D1D2C3"
-        android:capitalize="characters"
         android:textAlignment="viewStart" />
 
     <Button

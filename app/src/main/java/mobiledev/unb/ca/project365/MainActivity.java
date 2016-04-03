@@ -84,6 +84,10 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    /*
+        Methods for populating the navigation bar menu.
+     */
+
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.activity_main, menu);
@@ -104,6 +108,11 @@ public class MainActivity extends AppCompatActivity {
                 return super.onOptionsItemSelected(item);
         }
     }
+
+
+    /*
+        Methods for taking a temporary photo file to send to the SaveNewPhotoActivity Intent.
+     */
 
     private void dispatchTakePictureIntent() {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);

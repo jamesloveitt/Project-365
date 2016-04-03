@@ -10,6 +10,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Paint;
+import android.graphics.Rect;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -35,14 +36,12 @@ public class SaveNewPhotoActivity extends Activity {
 
     private ImageView todaysPhotoView;
     private Button btnSavePhoto;
-    private Button btnAddCaption;
     private ShareButton btnShareWithFacebook;
     private EditText captionText;
     private File mStorageDir;
     private String mCurrentPhotoPath;
     private Bitmap currentPhotoBitmap;
     private Bitmap mutableBitmap;
-    private CallbackManager callbackManager;
     private String mSavedPhotoBasePath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES) +"/365Project";
     private static final String TAG ="Debug SaveNew";
 
@@ -56,7 +55,6 @@ public class SaveNewPhotoActivity extends Activity {
 
         todaysPhotoView = (ImageView) findViewById(R.id.todaysPhotoView);
         btnSavePhoto = (Button) findViewById(R.id.btnSavePhoto);
-        btnAddCaption = (Button) findViewById(R.id.btnAddCaption);
         captionText = (EditText) findViewById(R.id.captionText);
         btnShareWithFacebook = (ShareButton) findViewById(R.id.shareButton);
         btnShareWithFacebook.setEnabled(true);
@@ -67,51 +65,17 @@ public class SaveNewPhotoActivity extends Activity {
         currentPhotoBitmap = BitmapFactory.decodeFile(imagePath);
 
 
-        //Bitmap must be mutable to be edited by the canvas
-
+        // Bitmap must be mutable to be edited by the canvas
         mutableBitmap = currentPhotoBitmap.copy(Bitmap.Config.ARGB_8888, true);
 
-        // Some sample code for rotation we could use later on
+        // Rotate the image to display in portrait-mode
         Matrix matrix = new Matrix();
         matrix.postRotate(90F);
-        Bitmap rotatedBitmap = Bitmap.createBitmap(currentPhotoBitmap, 0, 0, currentPhotoBitmap.getWidth(), currentPhotoBitmap.getHeight(), matrix, true);
+        Bitmap rotatedBitmap = Bitmap.createBitmap(mutableBitmap, 0, 0, mutableBitmap.getWidth(), mutableBitmap.getHeight(), matrix, true);
         todaysPhotoView.setImageBitmap(rotatedBitmap);
 
-
-        //Save picture as with Button below but with a caption over the top of the image
-
-        btnAddCaption.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(SaveNewPhotoActivity.this, MainActivity.class);
-                startActivity(intent);
-
-                Canvas canvas = new Canvas(mutableBitmap);
-                Paint paint = new Paint();
-                paint.setColor(Color.BLACK);
-                paint.setTextSize(25);
-
-                //location on the photo to place the text and what text to write
-                canvas.drawText(captionText.getText().toString(), 20, 40, paint);
-
-                File savedPhotoFile = null;
-
-                try {
-                    savedPhotoFile = createSavedPhotoFile();
-                } catch (IOException ex) {
-                    Log.i(TAG, "Photo file was not created. Error: " + ex.getMessage());
-                }
-
-                // Display the 365 folder and photos in the Gallery
-                galleryAddPic();
-
-
-            }
-        });
-
-
-        // Save the picture to the user's list of photos and redirect them to the home page
+        // Save picture to the user's list of photos and redirect them to the home page.
+        // If the user changed the "Enter Caption" placeholder text, add a caption the photo.
 
         btnSavePhoto.setOnClickListener(new View.OnClickListener() {
 
@@ -119,6 +83,25 @@ public class SaveNewPhotoActivity extends Activity {
             public void onClick(View v) {
                 Intent intent = new Intent(SaveNewPhotoActivity.this, MainActivity.class);
                 startActivity(intent);
+
+                // only draw a caption if the user entered one
+                if(!captionText.getText().toString().equals("")) {
+                    Canvas canvas = new Canvas(mutableBitmap);
+                    Paint paint = new Paint();
+
+                    // draw grey rectangle behind text
+                    int screenWidth = getApplicationContext().getResources().getDisplayMetrics().widthPixels;
+                    Rect greyBack = new Rect(0,10,screenWidth,50);
+                    paint.setARGB(128, 0, 0, 0); // transparent black background
+                    canvas.drawRect(greyBack, paint);
+
+                    // draw text
+                    paint.setColor(Color.WHITE);
+                    paint.setTextSize(25);
+
+                    // location on the photo to place the text and what text to write
+                    canvas.drawText(captionText.getText().toString(), 20, 40, paint);
+                }
 
                 File savedPhotoFile = null;
 
@@ -138,8 +121,6 @@ public class SaveNewPhotoActivity extends Activity {
             @Override
             public void onClick(View v) {
                 postPicture();
-
-
             }
         });
     }
@@ -239,6 +220,7 @@ public class SaveNewPhotoActivity extends Activity {
         try {
             output = new FileOutputStream(image);
             mutableBitmap.compress(Bitmap.CompressFormat.JPEG, 100, output);
+            mutableBitmap = Bitmap.createScaledBitmap(mutableBitmap, 300, 900, true);
             output.flush();
             output.close();
         } catch (Exception e) {
