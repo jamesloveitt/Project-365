@@ -52,8 +52,6 @@ public class PhotoGridAdapter extends BaseAdapter {
         Bitmap bitmap = BitmapFactory.decodeFile(photos.get(position).getPhotoPath());
 
         // Displays photos in portrait orientation.
-        // TODO: possibly find a way to detect if the photo should be in landscape or portrait.
-        // TODO: maybe save it as Photo object property, or calculate based on image dimensions
 
         if(bitmap != null) {
             Matrix matrix = new Matrix();
