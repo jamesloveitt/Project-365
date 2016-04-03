@@ -7,8 +7,4 @@
         android:title="@string/set_notification"
         app:showAsAction="never"/>
 
-    <item android:id="@+id/statistics_menu_item"
-        android:title="@string/view_statistics"
-        app:showAsAction="never"/>
-
 </menu>

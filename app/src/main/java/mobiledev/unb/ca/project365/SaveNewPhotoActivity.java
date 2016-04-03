@@ -64,7 +64,6 @@ public class SaveNewPhotoActivity extends Activity {
         String imagePath = getIntent().getStringExtra(Photo.PHOTO_PATH);
         currentPhotoBitmap = BitmapFactory.decodeFile(imagePath);
 
-
         // Bitmap must be mutable to be edited by the canvas
         mutableBitmap = currentPhotoBitmap.copy(Bitmap.Config.ARGB_8888, true);
 
