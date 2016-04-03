@@ -20,7 +20,19 @@
         android:layout_height="wrap_content"
         android:id="@+id/todaysPhotoView"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="40dp" />
+        android:layout_marginTop="20dp" />
+
+    <EditText
+        android:id="@+id/captionText"
+        android:layout_width="195dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textView"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="15dp"
+        android:layout_gravity="center_horizontal"
+        android:inputType="text"
+        android:hint="Enter Caption" />
 
     <Button
         android:layout_width="195dp"
@@ -30,36 +42,14 @@
         android:layout_below="@+id/textView"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="15dp"
         android:layout_gravity="center_horizontal" />
-    <Button
-        android:layout_width="195dp"
-        android:layout_height="wrap_content"
-        android:text="Save Photo with Caption"
-        android:id="@+id/btnAddCaption"
-        android:layout_below="@+id/textView"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="50dp"
-        android:layout_gravity="center_horizontal" />
-
-    <EditText
-        android:id="@+id/captionText"
-        android:layout_width="195dp"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/textView"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="50dp"
-        android:layout_gravity="center_horizontal"
-        android:inputType="text"
-        android:text="Enter Caption" />
 
     <com.facebook.share.widget.ShareButton
         android:id="@+id/shareButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="15dp"
         android:layout_gravity="center_horizontal"/>
 
 </LinearLayout>

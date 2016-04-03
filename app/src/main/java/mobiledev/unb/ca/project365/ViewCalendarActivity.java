@@ -16,6 +16,7 @@ import android.widget.TextView;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import java.util.regex.Matcher;
@@ -45,7 +46,7 @@ public class ViewCalendarActivity extends Activity {
         }
 
         File[] folders = baseDirectory.listFiles();
-        Arrays.sort(folders);
+        Arrays.sort(folders, Collections.reverseOrder());
 
         for (File file : folders) {
             if(file.isDirectory() && folderIsMonth(file.getName())) {

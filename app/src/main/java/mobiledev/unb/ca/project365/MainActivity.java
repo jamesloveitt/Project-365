@@ -11,6 +11,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
@@ -29,7 +30,6 @@ public class MainActivity extends AppCompatActivity {
 
     private Button mTodaysPhotoBtn;
     private Button mViewCalendarBtn;
-    private Button mAlarmBtn;
     private String mCurrentPhotoPath;
     private CallbackManager callbackManager;
     private LoginButton loginButton;
@@ -82,22 +82,37 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
-        mAlarmBtn = (Button) findViewById(R.id.btnAlarm);
-        mAlarmBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, SetNotification.class);
-                startActivity(intent);
-            }
-        });
     }
+
+    /*
+        Methods for populating the navigation bar menu.
+     */
 
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.activity_main, menu);
         return true;
     }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle item selection
+        switch (item.getItemId()) {
+            case R.id.notification_menu_item:
+                Intent intent = new Intent(MainActivity.this, SetNotification.class);
+                startActivity(intent);
+                return true;
+            case R.id.statistics_menu_item:
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+
+    /*
+        Methods for taking a temporary photo file to send to the SaveNewPhotoActivity Intent.
+     */
 
     private void dispatchTakePictureIntent() {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
