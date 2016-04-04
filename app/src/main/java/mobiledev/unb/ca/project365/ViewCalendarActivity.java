@@ -44,35 +44,38 @@ public class ViewCalendarActivity extends Activity {
         if(!baseDirectory.exists()) {
             Log.i(TAG, "No directory for saved photos exists");
         }
-
         File[] folders = baseDirectory.listFiles();
-        Arrays.sort(folders, Collections.reverseOrder());
 
-        for (File file : folders) {
-            if(file.isDirectory() && folderIsMonth(file.getName())) {
-                File currDirectory = file;
-                List<Photo> currMonthPhotos = loadSavedPhotos(currDirectory);
+        if(folders.length > 0) {
+            Arrays.sort(folders, Collections.reverseOrder());
 
-                // for the current month directory, create a calendar header (containing the month and year)
-                // and a GridView that contains the photos in that directory.
+            for (File file : folders) {
+                if (file.isDirectory() && folderIsMonth(file.getName())) {
+                    File currDirectory = file;
+                    List<Photo> currMonthPhotos = loadSavedPhotos(currDirectory);
 
-                // inflate the view for an individual month
-                LayoutInflater inflater = (LayoutInflater) getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                View individualMonthView = inflater.inflate(R.layout.calendar_single_month, null);
+                    // for the current month directory, create a calendar header (containing the month and year)
+                    // and a GridView that contains the photos in that directory.
 
-                // fill in any details dynamically here
-                GridView currentMonthGridView = (GridView) individualMonthView.findViewById(R.id.month_grid);
-                TextView monthHeader = (TextView) individualMonthView.findViewById(R.id.month_header); //(TextView) findViewById(R.id.month_header);
+                    // inflate the view for an individual month
+                    LayoutInflater inflater = (LayoutInflater) getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                    View individualMonthView = inflater.inflate(R.layout.calendar_single_month, null);
 
-                String currentMonth = parseIntoMonthYear(file.getName());
-                monthHeader.setText(currentMonth);
-                populateGridView(currentMonthGridView, currMonthPhotos);
+                    // fill in any details dynamically here
+                    GridView currentMonthGridView = (GridView) individualMonthView.findViewById(R.id.month_grid);
+                    TextView monthHeader = (TextView) individualMonthView.findViewById(R.id.month_header); //(TextView) findViewById(R.id.month_header);
 
-                // add the newly modified views from calendar_single_month.xmlonth.xml to calendar_all_months.xml's layout
-                LinearLayout allMonthsContainer = (LinearLayout) findViewById(R.id.all_months_container);
-                allMonthsContainer.addView(individualMonthView);
+                    String currentMonth = parseIntoMonthYear(file.getName());
+                    monthHeader.setText(currentMonth);
+                    populateGridView(currentMonthGridView, currMonthPhotos);
+
+                    // add the newly modified views from calendar_single_month.xmlonth.xml to calendar_all_months.xml's layout
+                    LinearLayout allMonthsContainer = (LinearLayout) findViewById(R.id.all_months_container);
+                    allMonthsContainer.addView(individualMonthView);
+                }
             }
         }
+
     }
 
     /*
